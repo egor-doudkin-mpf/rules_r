@@ -23,7 +23,8 @@ TMP_FILES=() # Temporary files to be cleaned up before exiting the script.
 export PATH
 
 cleanup() {
-  rm -rf "${TMP_FILES[@]+"${TMP_FILES[@]}"}"
+  echo "Cleaning up... "
+  ## rm -rf "${TMP_FILES[@]+"${TMP_FILES[@]}"}"
 }
 trap 'cleanup; exit 1' INT HUP QUIT TERM EXIT
 
