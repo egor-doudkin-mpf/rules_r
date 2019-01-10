@@ -17,6 +17,8 @@ set -euo pipefail
 
 EXEC_ROOT=$(pwd -P)
 
+echo "EXEC_ROOT=$EXEC_ROOT" >> /tmp/r_cmd_install.log
+
 TMP_FILES=() # Temporary files to be cleaned up before exiting the script.
 
 # Export PATH from bazel for subprocesses.
@@ -149,6 +151,8 @@ if "${BUILD_SRC_ARCHIVE:-"false"}"; then
 fi
 
 export R_LIBS="${R_LIBS_DEPS//_EXEC_ROOT_/${EXEC_ROOT}/}"
+
+echo "R_LIBS" >> /tmp/r_libs.log
 
 # Easy case -- we allow timestamp and install paths to be stamped inside the package files.
 if ! ${REPRODUCIBLE_BUILD}; then
