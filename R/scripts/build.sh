@@ -197,6 +197,7 @@ repro_flags=(
 echo "CPPFLAGS += ${repro_flags[*]}" > "${R_MAKEVARS_SITE}"
 
 # Install the package to the common temp library.
+echo "Install COMMAND ${R} CMD INSTALL ${INSTALL_ARGS} --built-timestamp='' --no-lock --build --library=${TMP_LIB} ${TMP_SRC_PKG}"
 silent "${R}" CMD INSTALL "${INSTALL_ARGS}" --built-timestamp='' --no-lock --build --library="${TMP_LIB}" "${TMP_SRC_PKG}"
 ## rm -rf "${PKG_LIB_PATH:?}/${PKG_NAME}" # Delete empty directories to make way for move.
 mv -f "${TMP_LIB}/${PKG_NAME}" "${PKG_LIB_PATH}/"
@@ -206,5 +207,5 @@ if "${INSTRUMENTED}"; then
   add_instrumentation_hook "${TMP_SRC_PKG}"
 fi
 
-trap - EXIT
+# trap - EXIT
 cleanup
