@@ -155,7 +155,7 @@ export R_LIBS="${R_LIBS_DEPS//_EXEC_ROOT_/${EXEC_ROOT}/}"
 
 
 echo "$R_LIBS" >> /tmp/r_libs.log
-RScript --vanilla --slave -e ".libPaths()" >> /tmp/r_libPaths.log
+Rscript --vanilla --slave -e ".libPaths()" >> /tmp/r_libPaths.log
 
 # Easy case -- we allow timestamp and install paths to be stamped inside the package files.
 if ! ${REPRODUCIBLE_BUILD}; then
