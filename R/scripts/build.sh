@@ -178,7 +178,7 @@ lock "${LOCK_DIR}" "${PKG_NAME}"
 
 TMP_SRC_PKG="${TMP_SRC}/${PKG_SRC_DIR}"
 mkdir -p "${TMP_SRC_PKG}"
-rm -rf "${TMP_SRC_PKG}" 2>/dev/null || true
+## rm -rf "${TMP_SRC_PKG}" 2>/dev/null || true
 cp -a "${EXEC_ROOT}/${PKG_SRC_DIR}" "${TMP_SRC_PKG}"
 TMP_FILES+=("${TMP_SRC_PKG}")
 
@@ -198,7 +198,7 @@ echo "CPPFLAGS += ${repro_flags[*]}" > "${R_MAKEVARS_SITE}"
 
 # Install the package to the common temp library.
 silent "${R}" CMD INSTALL "${INSTALL_ARGS}" --built-timestamp='' --no-lock --build --library="${TMP_LIB}" "${TMP_SRC_PKG}"
-rm -rf "${PKG_LIB_PATH:?}/${PKG_NAME}" # Delete empty directories to make way for move.
+## rm -rf "${PKG_LIB_PATH:?}/${PKG_NAME}" # Delete empty directories to make way for move.
 mv -f "${TMP_LIB}/${PKG_NAME}" "${PKG_LIB_PATH}/"
 mv "${PKG_NAME}"*gz "${PKG_BIN_ARCHIVE}"  # .tgz on macOS and .tar.gz on Linux.
 
