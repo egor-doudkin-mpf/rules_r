@@ -59,12 +59,13 @@ R_LIBS="${R_LIBS//_EXEC_ROOT_/$PWD/}"
 export R_LIBS
 export R_LIBS_USER=dummy
 
-src_path="../{workspace_name}/{src}"
-
-if [[ -x "${src_path}" ]]; then
-  "${src_path}" "$@"
+src_path="$(dirname ../{workspace_name}/{src})"
+src_file="$(basename ../{workspace_name}/{src})"
+cd "${src_path}"
+if [[ -x "${src_file}" ]]; then
+  "${src_file}" "$@"
 else
-  {Rscript} {Rscript_args} "${src_path}" "$@"
+  {Rscript} {Rscript_args} "${src_file}" "$@"
 fi
 
 cd "${START_DIR}" || fatal "Could not go back to start directory."
