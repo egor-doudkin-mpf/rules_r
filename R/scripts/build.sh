@@ -139,6 +139,7 @@ fi
 mkdir -p "${PKG_LIB_PATH}"
 
 if "${BUILD_SRC_ARCHIVE:-"false"}"; then
+  echo "${R} CMD build ${BUILD_ARGS} ${PKG_SRC_DIR}" >> /tmp/r_cmd_install.log
   silent "${R}" CMD build "${BUILD_ARGS}" "${PKG_SRC_DIR}"
   mv "${PKG_NAME}"*.tar.gz "${PKG_SRC_ARCHIVE}"
 
@@ -151,6 +152,9 @@ export R_LIBS="${R_LIBS_DEPS//_EXEC_ROOT_/${EXEC_ROOT}/}"
 
 # Easy case -- we allow timestamp and install paths to be stamped inside the package files.
 if ! ${REPRODUCIBLE_BUILD}; then
+
+  echo "${R} CMD INSTALL ${INSTALL_ARGS} --build --library=${PKG_LIB_PATH} ${PKG_SRC_DIR}"  >> /tmp/r_cmd_install.log
+
   silent "${R}" CMD INSTALL "${INSTALL_ARGS}" --build --library="${PKG_LIB_PATH}" \
     "${PKG_SRC_DIR}"
   mv "${PKG_NAME}"*gz "${PKG_BIN_ARCHIVE}"  # .tgz on macOS and .tar.gz on Linux.
@@ -196,6 +200,9 @@ repro_flags=(
 echo "CPPFLAGS += ${repro_flags[*]}" > "${R_MAKEVARS_SITE}"
 
 # Install the package to the common temp library.
+
+echo "${R} CMD INSTALL ${INSTALL_ARGS} --built-timestamp='' --no-lock --build --library=${TMP_LIB} ${TMP_SRC_PKG}" >> /tmp/r_cmd_install.log
+
 silent "${R}" CMD INSTALL "${INSTALL_ARGS}" --built-timestamp='' --no-lock --build --library="${TMP_LIB}" "${TMP_SRC_PKG}"
 rm -rf "${PKG_LIB_PATH:?}/${PKG_NAME}" # Delete empty directories to make way for move.
 mv -f "${TMP_LIB}/${PKG_NAME}" "${PKG_LIB_PATH}/"
